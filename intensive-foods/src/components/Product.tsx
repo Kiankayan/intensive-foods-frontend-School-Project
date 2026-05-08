@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getFoods } from "../../services/fakeFoodService";
+import Pagination from "./Pagination";
 
 interface Category {
   _id: string;
@@ -96,6 +97,9 @@ function Product(): React.ReactElement {
           </tbody>
         </table>
       )}
+      <div className="mt-3">
+        <Pagination />
+      </div>
     </div>
   );
 }

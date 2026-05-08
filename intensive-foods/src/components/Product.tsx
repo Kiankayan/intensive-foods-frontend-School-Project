@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getFoods } from "../../services/fakeFoodService";
 import Pagination from "./Pagination";
+import ListGroup from "./ListGroup";
 
 interface Category {
   _id: string;
@@ -44,61 +45,72 @@ function Product(): React.ReactElement {
   };
 
   return (
-    <div>
-      {foods.length === 0 ? (
-        <p>There are no foods in the database</p>
-      ) : (
-        <p>Showing {foods.length} foods in the database</p>
-      )}
+    <div className="container mt-4">
+      <div className="row">
+        <div className="col-2">
+          <ListGroup />
+        </div>
 
-      {foods.length > 0 && (
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Category</th>
-              <th scope="col">Stock</th>
-              <th scope="col">Price</th>
-            </tr>
-          </thead>
+        <div className="col-9">
+          <div>
+            {foods.length === 0 ? (
+              <p>There are no foods in the database</p>
+            ) : (
+              <p>Showing {foods.length} foods in the database</p>
+            )}
 
-          <tbody className="table-group-divider">
-            {foods.map((food) => (
-              <tr key={food._id}>
-                <td>{food.name}</td>
-                <td>{food.category.name}</td>
-                <td>{food.numberInStock}</td>
-                <td>{food.price}</td>
-                <td>
-                  <i
-                    className={
-                      food.isFavorite
-                        ? "fa-solid fa-star"
-                        : "fa-regular fa-star"
-                    }
-                    style={{
-                      cursor: "pointer",
-                      color: food.isFavorite ? "black" : "gray",
-                    }}
-                    onClick={() => toggleFavorite(food._id)}
-                  ></i>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(food._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      <div className="mt-3">
-        <Pagination />
+            {foods.length > 0 && (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Price</th>
+                  </tr>
+                </thead>
+
+                <tbody className="table-group-divider">
+                  {foods.map((food) => (
+                    <tr key={food._id}>
+                      <td>{food.name}</td>
+                      <td>{food.category.name}</td>
+                      <td>{food.numberInStock}</td>
+                      <td>{food.price}</td>
+                      <td>
+                        <i
+                          className={
+                            food.isFavorite
+                              ? "fa-solid fa-star"
+                              : "fa-regular fa-star"
+                          }
+                          style={{
+                            cursor: "pointer",
+                            color: food.isFavorite ? "black" : "gray",
+                          }}
+                          onClick={() => toggleFavorite(food._id)}
+                        ></i>
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={() => handleDelete(food._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            <div className="mt-4">
+              <Pagination />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

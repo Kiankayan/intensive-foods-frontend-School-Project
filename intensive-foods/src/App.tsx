@@ -1,7 +1,7 @@
-import Product from "./components/Product";
+import Foods from "./components/Foods";
 
-function App(): React.ReactElement {
-  return <Product />;
+function App() {
+  return <Foods />;
 }
 
 export default App;

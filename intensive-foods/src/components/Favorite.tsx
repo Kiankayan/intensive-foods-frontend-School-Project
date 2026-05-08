@@ -1,14 +1,16 @@
 interface Props {
-  isFavored: boolean;
-  onFavor(): void;
+  isFavorite: boolean;
+  onClick: () => void;
 }
 
-function Favorite({ isFavored, onFavor }: Props) {
+function Favorite({ isFavorite, onClick }: Props): React.ReactElement {
   return (
     <i
-      className={`clickable fa-heart fa-${isFavored ? "solid" : "regular"}`}
-      onClick={onFavor}
+      className={`fa-star fa-${isFavorite ? "solid" : "regular"}`}
+      onClick={onClick}
+      style={{ cursor: "pointer" }}
     />
   );
 }
+
 export default Favorite;

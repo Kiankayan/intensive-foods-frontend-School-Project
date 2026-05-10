@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { getFoods } from "../../services/fakeFoodService";
+import { paginate } from "../utils";
+import { getFoods, type Food } from "../../services/fakeFoodService";
 import {
   type Category,
   getCategories,
@@ -13,16 +14,17 @@ const DEFAULT_CATEGORY: Category = {
   _id: "",
   name: "All Categories",
 };
+const PAGE_SIZE = 4;
 
 // Paginering
 
 // Börja med att skapa en Utility fil i src mappen som "Utils.ts". Utility functions eller helper functions är funktion som hjälper oss att åstadkomma saker men som är generella.
 
+// Glöm inte att committa efter.
+
 export default function Foods() {
-  const [foods, setFoods] = useState(getFoods());
-
+  const [foods, setFoods] = useState<Food[]>(getFoods());
   const [selectedPage, setSelectedPage] = useState(1);
-
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
 
   function handleDelete(id: string) {
@@ -45,6 +47,10 @@ export default function Foods() {
 
     setFoods(updatedFoods);
   }
+
+  if (foods.length === 0) return <p>There are no foods in the database</p>;
+
+  const paginatedFoods = paginate(foods, PAGE_SIZE, selectedPage);
 
   return (
     <div className="container mt-4">
@@ -70,23 +76,23 @@ export default function Foods() {
                 <tr>
                   <th>Name</th>
                   <th>Category</th>
-                  <th>Stock</th>
                   <th>Price</th>
-                  <th>Favorite</th>
+                  <th>Stock</th>
+
                   <th></th>
                 </tr>
               </thead>
 
               <tbody className="table-group-divider">
-                {foods.map((food) => (
+                {paginatedFoods.map((food) => (
                   <tr key={food._id}>
                     <td>{food.name}</td>
 
                     <td>{food.category.name}</td>
 
-                    <td>{food.numberInStock}</td>
-
                     <td>{food.price}</td>
+
+                    <td>{food.numberInStock}</td>
 
                     <td>
                       <Favorite
@@ -113,7 +119,7 @@ export default function Foods() {
           <div className="mt-4">
             <Pagination
               totalCount={foods.length}
-              pageSize={4}
+              pageSize={PAGE_SIZE}
               selectedPage={selectedPage}
               setSelectedPage={setSelectedPage}
             />

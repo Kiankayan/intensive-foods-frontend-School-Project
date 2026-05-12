@@ -11,27 +11,28 @@ import Pagination from "./Pagination";
 import ListGroup from "./ListGroup";
 import Favorite from "./Favorite";
 
+interface SortColumn {
+  path: string;
+  order: "asc" | "desc";
+}
+
 const DEFAULT_CATEGORY: Category = {
   _id: "",
   name: "All Categories",
 };
+const DEFAULT_SORT_COLUMN: SortColumn = { path: "name", order: "asc" };
+
 const PAGE_SIZE = 4;
 
-// Sortering - Basic
+// Sortering - Avancerad
 
-// Sortering kan vara jobbigt att hantera manuellt men det finns en utility biblotek som gör det mycket enklare och den heter Lodash.
-
-// Lodash har många utility funktioner bla range funktioner som vi byggde för pagination men det vi är intresserad är sortering och klicka på dokumentation i Lodash sen orderBy.
-
-// Öppna upp terminalen för att installera Lodash så skriv "npm i lodash" sen därefter så importera man lodash i Foods.tsx högt upp med import _ from "lodash";. Det kommer dyka upp en error på importerings koden för att lösa det så skriver man igen i terminalen "npm i @types/lodash".
-
-// Efter att ha gjort allt så commitar man "git add ." och "git commit -m "implemented basic sorting".
+// Committa efter med "git add ." sen "git commit -m "implemented sorting both asc and desc"
 
 export default function Foods() {
   const [foods, setFoods] = useState<Food[]>(getFoods());
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
-  const [sortColumn, setSortColumn] = useState("name");
+  const [sortColumn, setSortColumn] = useState(DEFAULT_SORT_COLUMN);
 
   function handleDelete(id: string) {
     const newFoods = foods.filter((food) => food._id !== id);
@@ -59,17 +60,30 @@ export default function Foods() {
     setSelectedPage(1);
   }
 
+  function handleSort(path: string) {
+    if (path === sortColumn.path) {
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+
+    setSortColumn({ ...sortColumn });
+  }
+
   if (foods.length === 0) return <p>There are no foods in the database</p>;
 
   const filteredFoods = selectedCategory._id
     ? foods.filter((food) => food.category._id === selectedCategory._id)
     : foods;
 
-  const sortedFoods = _.orderBy(filteredFoods, sortColumn, "asc");
+  const sortedFoods = _.orderBy(
+    filteredFoods,
+    sortColumn.path,
+    sortColumn.order,
+  );
 
   const paginatedFoods = paginate(sortedFoods, PAGE_SIZE, selectedPage);
-
-  console.log(sortColumn);
 
   return (
     <div className="container mt-4">
@@ -93,12 +107,10 @@ export default function Foods() {
             <table className="table">
               <thead>
                 <tr>
-                  <th onClick={() => setSortColumn("name")}> Name</th>
-                  <th onClick={() => setSortColumn("category.name")}>
-                    Category
-                  </th>
-                  <th onClick={() => setSortColumn("price")}>Price</th>
-                  <th onClick={() => setSortColumn("numberInStock")}>Stock</th>
+                  <th onClick={() => handleSort("name")}> Name</th>
+                  <th onClick={() => handleSort("category.name")}>Category</th>
+                  <th onClick={() => handleSort("price")}>Price</th>
+                  <th onClick={() => handleSort("numberInStock")}>Stock</th>
 
                   <th></th>
                 </tr>

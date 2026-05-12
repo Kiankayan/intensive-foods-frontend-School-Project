@@ -1,4 +1,5 @@
 import { useState } from "react";
+import _ from "lodash";
 import { paginate } from "../utils";
 import { getFoods, type Food } from "../../services/fakeFoodService";
 import {
@@ -16,12 +17,21 @@ const DEFAULT_CATEGORY: Category = {
 };
 const PAGE_SIZE = 4;
 
-// Filtrering
+// Sortering - Basic
+
+// Sortering kan vara jobbigt att hantera manuellt men det finns en utility biblotek som gör det mycket enklare och den heter Lodash.
+
+// Lodash har många utility funktioner bla range funktioner som vi byggde för pagination men det vi är intresserad är sortering och klicka på dokumentation i Lodash sen orderBy.
+
+// Öppna upp terminalen för att installera Lodash så skriv "npm i lodash" sen därefter så importera man lodash i Foods.tsx högt upp med import _ from "lodash";. Det kommer dyka upp en error på importerings koden för att lösa det så skriver man igen i terminalen "npm i @types/lodash".
+
+// Efter att ha gjort allt så commitar man "git add ." och "git commit -m "implemented basic sorting".
 
 export default function Foods() {
   const [foods, setFoods] = useState<Food[]>(getFoods());
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
+  const [sortColumn, setSortColumn] = useState("name");
 
   function handleDelete(id: string) {
     const newFoods = foods.filter((food) => food._id !== id);
@@ -55,7 +65,11 @@ export default function Foods() {
     ? foods.filter((food) => food.category._id === selectedCategory._id)
     : foods;
 
-  const paginatedFoods = paginate(filteredFoods, PAGE_SIZE, selectedPage);
+  const sortedFoods = _.orderBy(filteredFoods, sortColumn, "asc");
+
+  const paginatedFoods = paginate(sortedFoods, PAGE_SIZE, selectedPage);
+
+  console.log(sortColumn);
 
   return (
     <div className="container mt-4">
@@ -79,10 +93,12 @@ export default function Foods() {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>Stock</th>
+                  <th onClick={() => setSortColumn("name")}> Name</th>
+                  <th onClick={() => setSortColumn("category.name")}>
+                    Category
+                  </th>
+                  <th onClick={() => setSortColumn("price")}>Price</th>
+                  <th onClick={() => setSortColumn("numberInStock")}>Stock</th>
 
                   <th></th>
                 </tr>

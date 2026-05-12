@@ -16,11 +16,7 @@ const DEFAULT_CATEGORY: Category = {
 };
 const PAGE_SIZE = 4;
 
-// Paginering
-
-// Börja med att skapa en Utility fil i src mappen som "Utils.ts". Utility functions eller helper functions är funktion som hjälper oss att åstadkomma saker men som är generella.
-
-// Glöm inte att committa efter.
+// Filtrering
 
 export default function Foods() {
   const [foods, setFoods] = useState<Food[]>(getFoods());
@@ -48,9 +44,18 @@ export default function Foods() {
     setFoods(updatedFoods);
   }
 
+  function handleCategorySelect(category: Category) {
+    setSelectedCategory(category);
+    setSelectedPage(1);
+  }
+
   if (foods.length === 0) return <p>There are no foods in the database</p>;
 
-  const paginatedFoods = paginate(foods, PAGE_SIZE, selectedPage);
+  const filteredFoods = selectedCategory._id
+    ? foods.filter((food) => food.category._id === selectedCategory._id)
+    : foods;
+
+  const paginatedFoods = paginate(filteredFoods, PAGE_SIZE, selectedPage);
 
   return (
     <div className="container mt-4">
@@ -59,7 +64,7 @@ export default function Foods() {
           <ListGroup
             items={[DEFAULT_CATEGORY, ...getCategories()]}
             selectedItem={selectedCategory}
-            onSelectItem={(category: Category) => setSelectedCategory(category)}
+            onSelectItem={handleCategorySelect}
           />
         </div>
 
@@ -67,7 +72,7 @@ export default function Foods() {
           {foods.length === 0 ? (
             <p>There are no foods in the database</p>
           ) : (
-            <p>Showing {foods.length} foods in the database</p>
+            <p>Showing {filteredFoods.length} foods in the database</p>
           )}
 
           {foods.length > 0 && (
@@ -118,7 +123,7 @@ export default function Foods() {
 
           <div className="mt-4">
             <Pagination
-              totalCount={foods.length}
+              totalCount={filteredFoods.length}
               pageSize={PAGE_SIZE}
               selectedPage={selectedPage}
               setSelectedPage={setSelectedPage}

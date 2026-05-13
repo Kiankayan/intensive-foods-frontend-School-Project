@@ -1,6 +1,6 @@
 import type { Food } from "../../services/fakeFoodService";
 import Favorite from "./Favorite";
-import TableHeader from "./TableHeader";
+import TableHeader, { type Column } from "./TableHeader";
 
 export interface SortColumn {
   path: string;
@@ -16,9 +16,18 @@ interface Props {
 }
 
 function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
+  const columns: Column[] = [
+    { path: "name", label: "Name" },
+    { path: "category.name", label: "Category" },
+    { path: "price", label: "Price" },
+    { path: "numberInStock", label: "Stock" },
+    { key: "favorite" },
+    { key: "delete" },
+  ];
+
   return (
     <table className="table">
-      <TableHeader onSort={onSort} sortColumn={sortColumn} />
+      <TableHeader onSort={onSort} sortColumn={sortColumn} columns={columns} />
 
       <tbody className="table-group-divider">
         {foods.map((food) => (

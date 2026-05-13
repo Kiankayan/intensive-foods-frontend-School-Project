@@ -1,11 +1,23 @@
 import type { SortColumn } from "./FoodsTable";
 
 interface Props {
+  columns: Column[];
   sortColumn: SortColumn;
   onSort: (sortColumn: SortColumn) => void;
 }
 
-function TableHeader({ onSort, sortColumn }: Props) {
+interface TextColumn {
+  path: string;
+  label: string;
+}
+
+interface ContentColumn {
+  key: string;
+}
+
+export type Column = TextColumn | ContentColumn;
+
+function TableHeader({ onSort, sortColumn, columns }: Props) {
   function handleSort(path: string) {
     if (path === sortColumn.path) {
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
@@ -20,12 +32,16 @@ function TableHeader({ onSort, sortColumn }: Props) {
   return (
     <thead>
       <tr>
-        <th onClick={() => handleSort("name")}> Name</th>
-        <th onClick={() => handleSort("category.name")}>Category</th>
-        <th onClick={() => handleSort("price")}>Price</th>
-        <th onClick={() => handleSort("numberInStock")}>Stock</th>
-
-        <th></th>
+        {columns.map((column) =>
+          "path" in column ? (
+            <th key={column.path} onClick={() => handleSort(column.path)}>
+              {" "}
+              {column.label}
+            </th>
+          ) : (
+            <th key={column.key} />
+          ),
+        )}
       </tr>
     </thead>
   );

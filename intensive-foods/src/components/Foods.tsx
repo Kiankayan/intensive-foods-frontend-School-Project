@@ -9,7 +9,11 @@ import {
 
 import Pagination from "./Pagination";
 import ListGroup from "./ListGroup";
-import Favorite from "./Favorite";
+import FoodsTable from "./FoodsTable";
+
+// FoodsTable
+
+// Refaktoresering syftar att bryta komponenter i mindre beståndsdelar vilket gör att komponenterna blir mycket mindre vilket gör det lättare att underhålla och att vi inte behöver repetera kod lika mycket.
 
 interface SortColumn {
   path: string;
@@ -23,10 +27,6 @@ const DEFAULT_CATEGORY: Category = {
 const DEFAULT_SORT_COLUMN: SortColumn = { path: "name", order: "asc" };
 
 const PAGE_SIZE = 4;
-
-// Sortering - Avancerad
-
-// Committa efter med "git add ." sen "git commit -m "implemented sorting both asc and desc"
 
 export default function Foods() {
   const [foods, setFoods] = useState<Food[]>(getFoods());
@@ -103,51 +103,12 @@ export default function Foods() {
             <p>Showing {filteredFoods.length} foods in the database</p>
           )}
 
-          {foods.length > 0 && (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th onClick={() => handleSort("name")}> Name</th>
-                  <th onClick={() => handleSort("category.name")}>Category</th>
-                  <th onClick={() => handleSort("price")}>Price</th>
-                  <th onClick={() => handleSort("numberInStock")}>Stock</th>
-
-                  <th></th>
-                </tr>
-              </thead>
-
-              <tbody className="table-group-divider">
-                {paginatedFoods.map((food) => (
-                  <tr key={food._id}>
-                    <td>{food.name}</td>
-
-                    <td>{food.category.name}</td>
-
-                    <td>{food.price}</td>
-
-                    <td>{food.numberInStock}</td>
-
-                    <td>
-                      <Favorite
-                        isFavorite={food.isFavorite}
-                        onClick={() => handleFavor(food._id)}
-                      />
-                    </td>
-
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                        onClick={() => handleDelete(food._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+          <FoodsTable
+            foods={paginatedFoods}
+            onSort={handleSort}
+            onDelete={handleDelete}
+            onFavor={handleFavor}
+          />
 
           <div className="mt-4">
             <Pagination

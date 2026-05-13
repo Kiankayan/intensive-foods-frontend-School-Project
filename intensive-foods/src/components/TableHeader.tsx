@@ -1,4 +1,6 @@
+import type { Food } from "../../services/fakeFoodService";
 import type { SortColumn } from "./FoodsTable";
+import type { JSX } from "react";
 
 interface Props {
   columns: Column[];
@@ -13,6 +15,7 @@ interface TextColumn {
 
 interface ContentColumn {
   key: string;
+  content(food: Food): JSX.Element;
 }
 
 export type Column = TextColumn | ContentColumn;

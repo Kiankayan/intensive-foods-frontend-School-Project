@@ -1,3 +1,4 @@
+import type { GetFieldTypeOfNarrowed } from "lodash";
 import type { Food } from "../../services/fakeFoodService";
 import Favorite from "./Favorite";
 
@@ -18,7 +19,7 @@ interface Props {
 }
 
 function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
-  const columns: Column[] = [
+  const columns: Column<Food>[] = [
     { path: "name", label: "Name" },
     { path: "category.name", label: "Category" },
     { path: "price", label: "Price" },
@@ -46,7 +47,7 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
     <table className="table">
       <TableHeader onSort={onSort} sortColumn={sortColumn} columns={columns} />
       <TableBody
-        foods={foods}
+        items={foods}
         columns={columns}
         onDelete={onDelete}
         onFavor={onFavor}

@@ -9,16 +9,9 @@ import {
 
 import Pagination from "./Pagination";
 import ListGroup from "./ListGroup";
-import FoodsTable from "./FoodsTable";
+import FoodsTable, { type SortColumn } from "./FoodsTable";
 
-// FoodsTable
-
-// Refaktoresering syftar att bryta komponenter i mindre beståndsdelar vilket gör att komponenterna blir mycket mindre vilket gör det lättare att underhålla och att vi inte behöver repetera kod lika mycket.
-
-interface SortColumn {
-  path: string;
-  order: "asc" | "desc";
-}
+// Sortering
 
 const DEFAULT_CATEGORY: Category = {
   _id: "",
@@ -60,17 +53,6 @@ export default function Foods() {
     setSelectedPage(1);
   }
 
-  function handleSort(path: string) {
-    if (path === sortColumn.path) {
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.path = path;
-      sortColumn.order = "asc";
-    }
-
-    setSortColumn({ ...sortColumn });
-  }
-
   if (foods.length === 0) return <p>There are no foods in the database</p>;
 
   const filteredFoods = selectedCategory._id
@@ -105,7 +87,8 @@ export default function Foods() {
 
           <FoodsTable
             foods={paginatedFoods}
-            onSort={handleSort}
+            sortColumn={sortColumn}
+            onSort={setSortColumn}
             onDelete={handleDelete}
             onFavor={handleFavor}
           />

@@ -1,16 +1,19 @@
-import { type Category } from "../../services/fakeCategoryService";
-
-interface Props {
-  items: Category[];
-  selectedItem: Category;
-  onSelectItem: (item: Category) => void;
+interface Item {
+  _id: string;
+  name: string;
 }
 
-function ListGroup({
+interface Props<T extends Item> {
+  items: T[];
+  selectedItem: T;
+  onItemSelect(item: T): void;
+}
+
+function ListGroup<T extends Item>({
   items,
   selectedItem,
-  onSelectItem,
-}: Props): React.ReactElement {
+  onItemSelect,
+}: Props<T>) {
   return (
     <div className="list-group">
       {items.map((item) => (
@@ -20,7 +23,7 @@ function ListGroup({
           className={`list-group-item list-group-item-action ${
             selectedItem._id === item._id ? "active" : ""
           }`}
-          onClick={() => onSelectItem(item)}
+          onClick={() => onItemSelect(item)}
         >
           {item.name}
         </button>

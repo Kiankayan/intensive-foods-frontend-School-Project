@@ -1,4 +1,3 @@
-import type { GetFieldTypeOfNarrowed } from "lodash";
 import type { Food } from "../../services/fakeFoodService";
 import Favorite from "./Favorite";
 

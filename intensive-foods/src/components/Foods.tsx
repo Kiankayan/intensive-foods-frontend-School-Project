@@ -11,9 +11,7 @@ import Pagination from "./Pagination";
 import ListGroup from "./ListGroup";
 import FoodsTable, { type SortColumn } from "./FoodsTable";
 
-// Kolumner
-
-// Commita efter med "git add ." sedan "git commit -m "reusable table header".
+// Sort icon
 
 const DEFAULT_CATEGORY: Category = {
   _id: "",

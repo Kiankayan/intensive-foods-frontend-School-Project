@@ -31,6 +31,25 @@ function TableHeader<T>({ onSort, sortColumn, columns }: Props<T>) {
     onSort({ ...sortColumn });
   }
 
+  // Detta sätt är för att platta till koden och göra den mer enklare att skriva och förstå.
+
+  function renderSortIcon(column: TextColumn) {
+    if (column.path !== sortColumn.path) return null;
+
+    if (sortColumn.order === "asc")
+      return <i className="fa-solid fa-sort-down" />;
+
+    return <i className="fa-solid fa-sort-up" />;
+
+    // if (column.path === sortColumn.path) {
+    //   if (sortColumn.order === "asc")
+    //     return <i className="fa-solid fa-sort-down" />;
+
+    //   if (sortColumn.order === "desc")
+    //     return <i className="fa-solid fa-sort-up" />;
+    // }
+  }
+
   return (
     <thead>
       <tr>
@@ -38,7 +57,7 @@ function TableHeader<T>({ onSort, sortColumn, columns }: Props<T>) {
           "path" in column ? (
             <th key={column.path} onClick={() => handleSort(column.path)}>
               {" "}
-              {column.label}
+              {column.label} {renderSortIcon(column)}
             </th>
           ) : (
             <th key={column.key} />

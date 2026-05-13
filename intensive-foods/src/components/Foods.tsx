@@ -11,7 +11,7 @@ import Pagination from "./Pagination";
 import ListGroup from "./ListGroup";
 import FoodsTable, { type SortColumn } from "./FoodsTable";
 
-// Sortering
+// TableHeader
 
 const DEFAULT_CATEGORY: Category = {
   _id: "",

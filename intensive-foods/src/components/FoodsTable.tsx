@@ -1,12 +1,6 @@
-import type { Food } from "../../services/fakeFoodService";
+import type { Column, Food, SortColumn } from "../types";
 import Favorite from "./Favorite";
 import Table from "./Table";
-import { type Column } from "./TableHeader";
-
-export interface SortColumn {
-  path: string;
-  order: "asc" | "desc";
-}
 
 interface Props {
   foods: Food[];
@@ -26,7 +20,7 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
       key: "favorite",
       content: (food) => (
         <Favorite
-          isFavorite={food.isFavorite}
+          isFavored={food.isFavorite}
           onClick={() => onFavor(food._id)}
         />
       ),

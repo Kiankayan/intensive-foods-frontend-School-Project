@@ -2,16 +2,22 @@ import { useState } from "react";
 import _ from "lodash";
 import { paginate } from "../utils";
 import { getFoods, type Food } from "../../services/fakeFoodService";
-import {
-  type Category,
-  getCategories,
-} from "../../services/fakeCategoryService";
+import { getCategories } from "../../services/fakeCategoryService";
 
 import Pagination from "./Pagination";
 import ListGroup from "./ListGroup";
-import FoodsTable, { type SortColumn } from "./FoodsTable";
+import FoodsTable from "./FoodsTable";
+import type { Category, SortColumn } from "../types";
 
-// Sort icon
+// Types
+
+// Skapa en fil där man endast håller koll på typerna. tryck på src mappen sen skapa fil med namnet "types.ts".
+
+// Tack var det TypeScript så kommer typerna vara ganska enkel eftersom vi ska endast klipp in alla typer i types.ts filen sen lösa alla error som dyker upp.
+
+// Tips är att CTRL + högerklicka med musen för att hitta typerna i komponenterna tex i Table.tsx.
+
+// Efter ha importerat typerna för varje komponent så kan man öppna terminalen och trycka på "PROBLEMS" för att se om det finns några problem i de andra komonenterna i projektet. Detta underlättar mycket för att hitta errors.
 
 const DEFAULT_CATEGORY: Category = {
   _id: "",
@@ -74,7 +80,7 @@ export default function Foods() {
           <ListGroup
             items={[DEFAULT_CATEGORY, ...getCategories()]}
             selectedItem={selectedCategory}
-            onSelectItem={handleCategorySelect}
+            onItemSelect={handleCategorySelect}
           />
         </div>
 

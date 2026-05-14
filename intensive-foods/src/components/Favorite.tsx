@@ -1,12 +1,12 @@
 interface Props {
-  isFavorite: boolean;
+  isFavored: boolean;
   onClick: () => void;
 }
 
-function Favorite({ isFavorite, onClick }: Props): React.ReactElement {
+function Favorite({ isFavored, onClick }: Props): React.ReactElement {
   return (
     <i
-      className={`fa-star fa-${isFavorite ? "solid" : "regular"}`}
+      className={`fa-star fa-${isFavored ? "solid" : "regular"}`}
       onClick={onClick}
       style={{ cursor: "pointer" }}
     />

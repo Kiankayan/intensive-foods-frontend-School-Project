@@ -1,23 +1,10 @@
-import type { SortColumn } from "./FoodsTable";
-import type { JSX } from "react";
+import type { Column, SortColumn, TextColumn } from "../types";
 
 interface Props<T> {
   columns: Column<T>[];
   sortColumn: SortColumn;
   onSort: (sortColumn: SortColumn) => void;
 }
-
-interface TextColumn {
-  path: string;
-  label: string;
-}
-
-interface ContentColumn<T> {
-  key: string;
-  content(item: T): JSX.Element;
-}
-
-export type Column<T> = TextColumn | ContentColumn<T>;
 
 function TableHeader<T>({ onSort, sortColumn, columns }: Props<T>) {
   function handleSort(path: string) {
@@ -31,8 +18,6 @@ function TableHeader<T>({ onSort, sortColumn, columns }: Props<T>) {
     onSort({ ...sortColumn });
   }
 
-  // Detta sätt är för att platta till koden och göra den mer enklare att skriva och förstå.
-
   function renderSortIcon(column: TextColumn) {
     if (column.path !== sortColumn.path) return null;
 
@@ -40,14 +25,6 @@ function TableHeader<T>({ onSort, sortColumn, columns }: Props<T>) {
       return <i className="fa-solid fa-sort-down" />;
 
     return <i className="fa-solid fa-sort-up" />;
-
-    // if (column.path === sortColumn.path) {
-    //   if (sortColumn.order === "asc")
-    //     return <i className="fa-solid fa-sort-down" />;
-
-    //   if (sortColumn.order === "desc")
-    //     return <i className="fa-solid fa-sort-up" />;
-    // }
   }
 
   return (

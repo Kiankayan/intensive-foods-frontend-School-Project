@@ -4,20 +4,20 @@ import { paginate } from "../utils";
 import { getFoods, type Food } from "../../services/fakeFoodService";
 import { getCategories } from "../../services/fakeCategoryService";
 
-import Pagination from "./Pagination";
-import ListGroup from "./ListGroup";
+import Pagination from "./common/Pagination";
+import ListGroup from "./common/ListGroup";
 import FoodsTable from "./FoodsTable";
 import type { Category, SortColumn } from "../types";
 
-// Types
+// Common componenets
 
-// Skapa en fil där man endast håller koll på typerna. tryck på src mappen sen skapa fil med namnet "types.ts".
+// Reexporting är för att minska antal importer i våra filer.
 
-// Tack var det TypeScript så kommer typerna vara ganska enkel eftersom vi ska endast klipp in alla typer i types.ts filen sen lösa alla error som dyker upp.
+// Innan det så ska vi kategorisera våra komponenter samt uppdelning med reusable components dvs återanvända komponenter för detta projekt och evenetuellt/potentiellt i andra projekt.
 
-// Tips är att CTRL + högerklicka med musen för att hitta typerna i komponenterna tex i Table.tsx.
+// Våra reusable components ska finnas i en så kallad "common" mapp vilket är väldigt vanligt att ha innanför "components" mappen där man har alla reusable components.
 
-// Efter ha importerat typerna för varje komponent så kan man öppna terminalen och trycka på "PROBLEMS" för att se om det finns några problem i de andra komonenterna i projektet. Detta underlättar mycket för att hitta errors.
+// Foods.tsx och FoodsTable.tsx är tajt kopplade till vår intensive-foods projekt. Allt annat kan placeras i common mappen.
 
 const DEFAULT_CATEGORY: Category = {
   _id: "",

@@ -1,4 +1,4 @@
-import type { Column, Id, SortColumn } from "../types";
+import type { Column, Id, SortColumn } from "../../types";
 import TableBody from "./TableBody";
 import TableHeader from "./TableHeader";
 

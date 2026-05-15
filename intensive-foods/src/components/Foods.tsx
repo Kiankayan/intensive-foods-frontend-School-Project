@@ -1,23 +1,12 @@
 import { useState } from "react";
 import _ from "lodash";
 import { paginate } from "../utils";
-import { getFoods, type Food } from "../../services/fakeFoodService";
-import { getCategories } from "../../services/fakeCategoryService";
-
-import Pagination from "./common/Pagination";
-import ListGroup from "./common/ListGroup";
 import FoodsTable from "./FoodsTable";
-import type { Category, SortColumn } from "../types";
+import type { Category, Food, SortColumn } from "../types";
+import { ListGroup, Pagination } from "./common";
+import { getFoods, getCategories } from "../../services";
 
-// Common componenets
-
-// Reexporting är för att minska antal importer i våra filer.
-
-// Innan det så ska vi kategorisera våra komponenter samt uppdelning med reusable components dvs återanvända komponenter för detta projekt och evenetuellt/potentiellt i andra projekt.
-
-// Våra reusable components ska finnas i en så kallad "common" mapp vilket är väldigt vanligt att ha innanför "components" mappen där man har alla reusable components.
-
-// Foods.tsx och FoodsTable.tsx är tajt kopplade till vår intensive-foods projekt. Allt annat kan placeras i common mappen.
+// Root-relative imports
 
 const DEFAULT_CATEGORY: Category = {
   _id: "",
@@ -40,7 +29,7 @@ export default function Foods() {
   }
 
   function handleFavor(id: string) {
-    const updatedFoods = foods.map((food) => {
+    const newFoods = foods.map((food) => {
       if (food._id === id) {
         return {
           ...food,
@@ -51,7 +40,7 @@ export default function Foods() {
       return food;
     });
 
-    setFoods(updatedFoods);
+    setFoods(newFoods);
   }
 
   function handleCategorySelect(category: Category) {

@@ -1,6 +1,5 @@
 import type { Column, Id, SortColumn } from "../../types";
-import TableBody from "./TableBody";
-import TableHeader from "./TableHeader";
+import { TableBody, TableHeader } from ".";
 
 interface Props<T extends Id> {
   items: T[];

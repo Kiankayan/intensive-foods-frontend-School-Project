@@ -1,4 +1,4 @@
-import type { Category } from "../src/types";
+import type { Category } from "@types";
 
 const categories: Category[] = [
   { _id: "5b21ca3eeb7f6fbccd471818", name: "Fruit" },

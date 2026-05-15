@@ -1,5 +1,5 @@
-import type { Category } from "../src/types";
-import { getCategories } from "./fakeCategoryService";
+import type { Category } from "@types";
+import { getCategories } from "@services/fakeCategoryService";
 
 export interface Food {
   _id: string;

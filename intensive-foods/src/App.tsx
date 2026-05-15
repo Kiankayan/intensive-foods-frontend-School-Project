@@ -1,7 +1,5 @@
-import Foods from "./components/Foods";
+import { Foods } from "@components";
 
-function App() {
+export default function App() {
   return <Foods />;
 }
-
-export default App;

@@ -9,6 +9,7 @@ import {
   NotFound,
   FoodForm,
 } from "./components/common";
+import { Login } from "@components/pages";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "/login", element: <Login /> },
 ]);
 
 export default router;

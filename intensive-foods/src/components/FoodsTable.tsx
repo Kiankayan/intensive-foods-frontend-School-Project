@@ -16,11 +16,14 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
       key: "name",
       content: (food) => <Link to={`/foods/${food._id}`}>{food.name}</Link>,
     },
+
     { path: "category.name", label: "Category" },
     { path: "price", label: "Price" },
     { path: "numberInStock", label: "Stock" },
+
     {
       key: "favorite",
+
       content: (food) => (
         <Favorite
           isFavored={food.isFavorite}
@@ -28,6 +31,7 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
         />
       ),
     },
+
     {
       key: "delete",
       content: (food) => (
@@ -42,8 +46,8 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
     <Table
       columns={columns}
       items={foods}
-      onSort={onSort}
       sortColumn={sortColumn}
+      onSort={onSort}
     />
   );
 }

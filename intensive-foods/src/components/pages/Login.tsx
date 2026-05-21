@@ -1,16 +1,22 @@
+import type { FormEvent } from "react";
+
 function Login() {
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    console.log("Submitted");
+  }
+
   return (
     <div className="vh-100 d-grid justify-content-center align-content-center">
       <h1 className="mb-4 text-center">Login</h1>
       <div className="p-5 shadow rounded-3">
-        {" "}
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Username</label>
             <input className="form-control login-input" />
           </div>
           <div className="mb-3">
-            <label className="form-label">Username</label>
+            <label className="form-label">Password</label>
             <input className="form-control login-input" />
           </div>
           <div className="d-grid justify-content-center mt-4 ">
@@ -21,5 +27,4 @@ function Login() {
     </div>
   );
 }
-
 export default Login;

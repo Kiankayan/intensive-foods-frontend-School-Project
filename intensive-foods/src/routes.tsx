@@ -9,7 +9,7 @@ import {
   NotFound,
   FoodForm,
 } from "./components/common";
-import { Login } from "@components/pages";
+import Login from "@components/pages/Login";
 
 const router = createBrowserRouter([
   {

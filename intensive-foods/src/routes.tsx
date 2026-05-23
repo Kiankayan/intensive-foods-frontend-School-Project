@@ -10,6 +10,7 @@ import {
   FoodForm,
 } from "./components/common";
 import Login from "@components/pages/Login";
+import Register from "@components/pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,11 @@ const router = createBrowserRouter([
     ],
   },
   { path: "/login", element: <Login /> },
+
+  {
+    path: "/register",
+    element: <Register />,
+  },
 ]);
 
 export default router;

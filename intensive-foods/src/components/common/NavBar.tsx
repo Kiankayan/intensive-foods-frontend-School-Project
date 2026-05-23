@@ -38,6 +38,28 @@ export default function NavBar(): React.ReactElement {
         >
           Orders
         </NavLink>
+
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive
+              ? "nav-link active fw-bold ms-3"
+              : "nav-link text-secondary ms-3"
+          }
+        >
+          Login
+        </NavLink>
+
+        <NavLink
+          to="/register"
+          className={({ isActive }) =>
+            isActive
+              ? "nav-link active fw-bold ms-3"
+              : "nav-link text-secondary ms-3"
+          }
+        >
+          Register
+        </NavLink>
       </div>
     </nav>
   );

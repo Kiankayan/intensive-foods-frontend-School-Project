@@ -29,7 +29,7 @@ function Register() {
   });
 
   function onSubmit(data: FormData) {
-    console.log(data);
+    console.log("data", data);
 
     navigate("/foods");
   }
@@ -40,7 +40,6 @@ function Register() {
         <h1 className="mb-4 text-center">Register</h1>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* Name */}
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               Name
@@ -58,7 +57,6 @@ function Register() {
             )}
           </div>
 
-          {/* Email */}
           <div className="mb-3">
             <label htmlFor="username" className="form-label">
               Email
@@ -76,7 +74,6 @@ function Register() {
             )}
           </div>
 
-          {/* Password */}
           <div className="mb-4">
             <label htmlFor="password" className="form-label">
               Password

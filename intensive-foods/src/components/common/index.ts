@@ -10,3 +10,4 @@ export { default as NotFound } from "../pages/NotFound";
 export { default as NavBar } from "./NavBar";
 export { default as FoodForm } from "../pages/FoodForm";
 export { default as Foods } from "../Foods";
+export { default as SearchBox } from "./SearchBox";

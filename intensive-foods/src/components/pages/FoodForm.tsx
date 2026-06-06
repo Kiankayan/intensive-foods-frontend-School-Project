@@ -1,12 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 
+import { useEffect } from "react";
+
 import { useForm } from "react-hook-form";
 
 import { z } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { getCategories, saveFood } from "@services";
+import { getCategories, getFood, saveFood } from "@services";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -33,11 +35,30 @@ export default function FoodForm(): React.ReactElement {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (id === "new") return;
+
+    const food = getFood(id!);
+
+    if (!food) {
+      navigate("/foods");
+      return;
+    }
+
+    reset({
+      name: food.name,
+      categoryId: food.category._id,
+      numberInStock: food.numberInStock,
+      price: food.price,
+    });
+  }, [id, navigate, reset]);
 
   function onSubmit(data: FormData) {
     saveFood({

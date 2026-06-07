@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
 export interface Food {
-  _id: string;
+  id: string;
   name: string;
   category: Category;
   numberInStock: number;
@@ -10,12 +10,12 @@ export interface Food {
 }
 
 export interface Category {
-  _id: string;
+  id: string;
   name: string;
 }
 
 export interface Id {
-  _id: string;
+  id: string;
 }
 
 export interface SortColumn {

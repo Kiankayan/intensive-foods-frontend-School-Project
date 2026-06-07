@@ -14,7 +14,7 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
   const columns: Column<Food>[] = [
     {
       key: "name",
-      content: (food) => <Link to={`/foods/${food._id}`}>{food.name}</Link>,
+      content: (food) => <Link to={`/foods/${food.id}`}>{food.name}</Link>,
     },
 
     { path: "category.name", label: "Category" },
@@ -27,7 +27,7 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
       content: (food) => (
         <Favorite
           isFavored={food.isFavorite}
-          onClick={() => onFavor(food._id)}
+          onClick={() => onFavor(food.id)}
         />
       ),
     },
@@ -35,7 +35,7 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
     {
       key: "delete",
       content: (food) => (
-        <button className="btn btn-danger" onClick={() => onDelete(food._id)}>
+        <button className="btn btn-danger" onClick={() => onDelete(food.id)}>
           Delete
         </button>
       ),

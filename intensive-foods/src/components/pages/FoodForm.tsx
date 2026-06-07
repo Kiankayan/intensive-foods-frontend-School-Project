@@ -1,14 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
-
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
 import { z } from "zod";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getCategories, getFood, saveFood } from "@services";
+import type { Category } from "@types";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -27,10 +24,9 @@ type FormData = z.infer<typeof schema>;
 
 export default function FoodForm(): React.ReactElement {
   const navigate = useNavigate();
-
   const { id } = useParams();
 
-  const categories = getCategories();
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const {
     register,
@@ -43,35 +39,47 @@ export default function FoodForm(): React.ReactElement {
   });
 
   useEffect(() => {
-    if (id === "new") return;
-
-    const food = getFood(id!);
-
-    if (!food) {
-      navigate("/foods");
-      return;
+    async function loadCategories() {
+      const data = await getCategories();
+      setCategories(data);
     }
 
-    reset({
-      name: food.name,
-      categoryId: food.category._id,
-      numberInStock: food.numberInStock,
-      price: food.price,
-    });
+    loadCategories();
+  }, []);
+
+  useEffect(() => {
+    async function loadFood() {
+      if (id === "new") return;
+
+      try {
+        const food = await getFood(id!);
+
+        reset({
+          name: food.name,
+          categoryId: food.category.id,
+          numberInStock: food.numberInStock,
+          price: food.price,
+        });
+      } catch {
+        navigate("/foods");
+      }
+    }
+
+    loadFood();
   }, [id, navigate, reset]);
 
-  function onSubmit(data: FormData) {
-    saveFood({
-      _id: id === "new" ? "" : id!,
+  async function onSubmit(data: FormData) {
+    await saveFood({
+      id: id === "new" ? undefined : id,
       ...data,
     });
-    console.log("data", data);
+
     navigate("/foods");
   }
 
   return (
     <div className="container mt-4">
-      <h1 className="mb-4">Food Form {id}</h1>
+      <h1 className="mb-4">Food Form</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3">
@@ -89,7 +97,7 @@ export default function FoodForm(): React.ReactElement {
             <option value=""></option>
 
             {categories.map((category) => (
-              <option key={category._id} value={category._id}>
+              <option key={category.id} value={category.id}>
                 {category.name}
               </option>
             ))}

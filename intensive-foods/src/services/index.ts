@@ -1,2 +1,2 @@
-export { getCategories } from "./fakeCategoryService";
-export { deleteFood, getFood, getFoods, saveFood } from "./fakeFoodService";
+export { getCategories } from "./CategoryService";
+export { deleteFood, getFood, getFoods, saveFood } from "./FoodService";

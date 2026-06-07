@@ -1,5 +1,5 @@
 interface Item {
-  _id: string;
+  id: string;
   name: string;
 }
 
@@ -18,10 +18,10 @@ function ListGroup<T extends Item>({
     <div className="list-group">
       {items.map((item) => (
         <button
-          key={item._id}
+          key={item.id}
           type="button"
           className={`list-group-item list-group-item-action ${
-            selectedItem._id === item._id ? "active" : ""
+            selectedItem.id === item.id ? "active" : ""
           }`}
           onClick={() => onItemSelect(item)}
         >

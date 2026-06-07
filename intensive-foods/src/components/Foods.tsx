@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import _ from "lodash";
 import { paginate } from "@/utils";
@@ -8,30 +8,52 @@ import { ListGroup, Pagination, SearchBox } from "@/components/common";
 import { getCategories, getFoods, deleteFood } from "@services";
 
 const DEFAULT_CATEGORY: Category = {
-  _id: "",
+  id: "",
   name: "All Categories",
 };
-const DEFAULT_SORT_COLUMN: SortColumn = { path: "name", order: "asc" };
+
+const DEFAULT_SORT_COLUMN: SortColumn = {
+  path: "name",
+  order: "asc",
+};
 
 const PAGE_SIZE = 4;
 
 export default function Foods() {
   const navigate = useNavigate();
-  const [foods, setFoods] = useState<Food[]>(getFoods());
+
+  const [foods, setFoods] = useState<Food[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
+  const [selectedCategory, setSelectedCategory] =
+    useState<Category>(DEFAULT_CATEGORY);
   const [sortColumn, setSortColumn] = useState(DEFAULT_SORT_COLUMN);
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    async function loadData() {
+      const foodsData = await getFoods();
+      const categoriesData = await getCategories();
+
+      console.log("foods", foodsData);
+      console.log("categories", categoriesData);
+
+      setFoods(foodsData);
+      setCategories(categoriesData);
+    }
+
+    loadData();
+  }, []);
 
   function handleDelete(foodId: string) {
     deleteFood(foodId);
 
-    setFoods(foods.filter((f) => f._id !== foodId));
+    setFoods(foods.filter((f) => f.id !== foodId));
   }
 
   function handleFavor(id: string) {
     const newFoods = foods.map((food) => {
-      if (food._id === id) {
+      if (food.id === id) {
         return {
           ...food,
           isFavorite: !food.isFavorite,
@@ -56,14 +78,16 @@ export default function Foods() {
     setSelectedPage(1);
   }
 
-  if (foods.length === 0) return <p>There are no foods in the database</p>;
+  // if (foods.length === 0) {
+  //   return <p>There are no foods in the database</p>;
+  // }
 
   const filteredFoods = searchQuery
     ? foods.filter((food) =>
         food.name.toLowerCase().includes(searchQuery.toLowerCase()),
       )
-    : selectedCategory._id
-      ? foods.filter((food) => food.category._id === selectedCategory._id)
+    : selectedCategory.id
+      ? foods.filter((food) => food.category.id === selectedCategory.id)
       : foods;
 
   const sortedFoods = _.orderBy(
@@ -79,24 +103,24 @@ export default function Foods() {
       <div className="row">
         <div className="col-2">
           <ListGroup
-            items={[DEFAULT_CATEGORY, ...getCategories()]}
+            items={[DEFAULT_CATEGORY, ...categories]}
             selectedItem={selectedCategory}
             onItemSelect={handleCategorySelect}
           />
         </div>
 
         <div className="col-9">
+          <button
+            className="btn btn-primary mb-3"
+            onClick={() => navigate("/foods/new")}
+          >
+            New Food
+          </button>
+
           {foods.length === 0 ? (
             <p>There are no foods in the database</p>
           ) : (
             <>
-              <button
-                className="btn btn-primary mb-3"
-                onClick={() => navigate("/foods/new")}
-              >
-                New Food
-              </button>
-
               <p>Showing {filteredFoods.length} foods in the database</p>
 
               <SearchBox searchQuery={searchQuery} onSearch={handleSearch} />

@@ -2,7 +2,7 @@ import type { Category } from "@types";
 import { getCategories } from "@services/fakeCategoryService";
 
 export interface Food {
-  _id: string;
+  id: string;
   name: string;
   category: Category;
   numberInStock: number;
@@ -20,73 +20,73 @@ interface FoodFormData {
 
 const foods: Food[] = [
   {
-    _id: "5b21ca3eeb7f6fbccd471815",
+    id: "5b21ca3eeb7f6fbccd471815",
     name: "Apple",
-    category: { _id: "5b21ca3eeb7f6fbccd471818", name: "Fruit" },
+    category: { id: "5b21ca3eeb7f6fbccd471818", name: "Fruit" },
     numberInStock: 6,
     price: 10,
     isFavorite: false,
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471816",
+    id: "5b21ca3eeb7f6fbccd471816",
     name: "Banana",
-    category: { _id: "5b21ca3eeb7f6fbccd471818", name: "Fruit" },
+    category: { id: "5b21ca3eeb7f6fbccd471818", name: "Fruit" },
     numberInStock: 5,
     price: 15,
     isFavorite: false,
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471817",
+    id: "5b21ca3eeb7f6fbccd471817",
     name: "Cucumber",
-    category: { _id: "5b21ca3eeb7f6fbccd471820", name: "Vegetables" },
+    category: { id: "5b21ca3eeb7f6fbccd471820", name: "Vegetables" },
     numberInStock: 8,
     price: 7,
     isFavorite: false,
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471819",
+    id: "5b21ca3eeb7f6fbccd471819",
     name: "Chips",
-    category: { _id: "5b21ca3eeb7f6fbccd471814", name: "Snacks" },
+    category: { id: "5b21ca3eeb7f6fbccd471814", name: "Snacks" },
     numberInStock: 7,
     price: 12,
     isFavorite: false,
   },
   {
-    _id: "5b21ca3eeb7f6fbccd47181a",
+    id: "5b21ca3eeb7f6fbccd47181a",
     name: "Cookies",
-    category: { _id: "5b21ca3eeb7f6fbccd471814", name: "Snacks" },
+    category: { id: "5b21ca3eeb7f6fbccd471814", name: "Snacks" },
     numberInStock: 7,
     price: 8,
     isFavorite: false,
   },
   {
-    _id: "5b21ca3eeb7f6fbccd47181b",
+    id: "5b21ca3eeb7f6fbccd47181b",
     name: "Muffins",
-    category: { _id: "5b21ca3eeb7f6fbccd471814", name: "Snacks" },
+    category: { id: "5b21ca3eeb7f6fbccd471814", name: "Snacks" },
     numberInStock: 7,
     price: 13,
     isFavorite: false,
   },
   {
-    _id: "5b21ca3eeb7f6fbccd47181e",
+    id: "5b21ca3eeb7f6fbccd47181e",
     name: "Carrot",
-    category: { _id: "5b21ca3eeb7f6fbccd471820", name: "Vegetables" },
+    category: { id: "5b21ca3eeb7f6fbccd471820", name: "Vegetables" },
     numberInStock: 7,
     price: 7,
     isFavorite: false,
   },
   {
-    _id: "5b21ca3eeb7f6fbccd47181f",
+    id: "5b21ca3eeb7f6fbccd47181f",
     name: "Sallad",
-    category: { _id: "5b21ca3eeb7f6fbccd471820", name: "Vegetables" },
+    category: { id: "5b21ca3eeb7f6fbccd471820", name: "Vegetables" },
     numberInStock: 4,
     price: 14,
     isFavorite: false,
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471821",
+    id: "5b21ca3eeb7f6fbccd471821",
     name: "Orange",
-    category: { _id: "5b21ca3eeb7f6fbccd471818", name: "Fruit" },
+    category: { id: "5b21ca3eeb7f6fbccd471818", name: "Fruit" },
     numberInStock: 7,
     price: 20,
     isFavorite: false,

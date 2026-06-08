@@ -1,7 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldValues } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+
+// Registrera en användare
+
+// När vi vill submitta detta formulär så ska en ny användare skapas i databasen och endpointen för detta är ett POST anrop slash api slash users. Se nedan för exempel:
+
+// axios.post("https://server.intensivecode.se/api/users");
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -28,9 +35,9 @@ function Register() {
     mode: "onChange",
   });
 
-  function onSubmit(data: FormData) {
-    console.log("data", data);
-
+  function onSubmit(data: FieldValues) {
+    console.log("Submitted", data);
+    axios.post("https://server.intensivecode.se/api/users");
     navigate("/foods");
   }
 

@@ -5,19 +5,20 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getCategories, getFood, saveFood } from "@services";
-import type { Category } from "@types";
+import type { Category, Food } from "@types";
 
 const schema = z.object({
-  name: z.string().min(1, "Name is required"),
-  categoryId: z.string().min(1, "Category is required"),
+  id: z.string().optional(),
+  name: z.string().min(1, { message: "Name is required" }),
+  categoryId: z.string().min(1, { message: "You must select a category" }),
   numberInStock: z
     .number()
-    .min(1, "Stock must be at least 1")
-    .max(100, "Stock cannot exceed 100"),
+    .min(1, { message: "Stock must be at least 1" })
+    .max(100, { message: "Stock cannot exceed 100" }),
   price: z
     .number()
-    .min(1, "Price must be at least 1")
-    .max(20, "Price cannot exceed 20"),
+    .min(1, { message: "Price must be at least 1" })
+    .max(20, { message: "Price cannot exceed 20" }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -25,7 +26,6 @@ type FormData = z.infer<typeof schema>;
 export default function FoodForm(): React.ReactElement {
   const navigate = useNavigate();
   const { id } = useParams();
-
   const [categories, setCategories] = useState<Category[]>([]);
 
   const {
@@ -39,41 +39,35 @@ export default function FoodForm(): React.ReactElement {
   });
 
   useEffect(() => {
-    async function loadCategories() {
-      const data = await getCategories();
-      setCategories(data);
+    async function fetch() {
+      const { data: categories } = await getCategories();
+      setCategories(categories);
+
+      if (!id || id === "new") return;
+
+      const { data: food } = await getFood(id);
+
+      if (!food) return navigate("/not-found");
+
+      reset(mapToFormData(food));
     }
 
-    loadCategories();
+    fetch();
   }, []);
 
-  useEffect(() => {
-    async function loadFood() {
-      if (id === "new") return;
-
-      try {
-        const food = await getFood(id!);
-
-        reset({
-          name: food.name,
-          categoryId: food.category.id,
-          numberInStock: food.numberInStock,
-          price: food.price,
-        });
-      } catch {
-        navigate("/foods");
-      }
-    }
-
-    loadFood();
-  }, [id, navigate, reset]);
+  function mapToFormData(food: Food) {
+    return {
+      id: food.id,
+      name: food.name,
+      categoryId: food.category.id,
+      numberInStock: food.numberInStock,
+      price: food.price,
+    };
+  }
 
   async function onSubmit(data: FormData) {
-    await saveFood({
-      id: id === "new" ? undefined : id,
-      ...data,
-    });
-
+    console.log("data,", data);
+    await saveFood(data);
     navigate("/foods");
   }
 

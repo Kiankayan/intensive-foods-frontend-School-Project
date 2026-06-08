@@ -1,13 +1,8 @@
 import type { Category } from "@types";
+import axios from "axios";
 
-const apiUrl = "https://server.intensivecode.se/api/categories";
-
-export async function getCategories(): Promise<Category[]> {
-  const response = await fetch(apiUrl);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch categories");
-  }
-
-  return await response.json();
+export async function getCategories() {
+  return axios.get<Category[]>(
+    "https://server.intensivecode.se/api/categories",
+  );
 }

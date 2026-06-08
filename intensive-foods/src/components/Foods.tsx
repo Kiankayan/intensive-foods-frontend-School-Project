@@ -31,24 +31,21 @@ export default function Foods() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    async function loadData() {
-      const foodsData = await getFoods();
-      const categoriesData = await getCategories();
+    async function fetch() {
+      const { data: categories } = await getCategories();
+      setCategories(categories);
 
-      console.log("foods", foodsData);
-      console.log("categories", categoriesData);
-
-      setFoods(foodsData);
-      setCategories(categoriesData);
+      const { data: foods } = await getFoods();
+      setFoods(foods);
     }
 
-    loadData();
+    fetch();
   }, []);
 
-  function handleDelete(foodId: string) {
-    deleteFood(foodId);
-
-    setFoods(foods.filter((f) => f.id !== foodId));
+  async function handleDelete(id: string) {
+    const newFoods = foods.filter((food) => food.id !== id);
+    setFoods(newFoods);
+    await deleteFood(id);
   }
 
   function handleFavor(id: string) {
@@ -77,10 +74,6 @@ export default function Foods() {
     setSelectedCategory(DEFAULT_CATEGORY);
     setSelectedPage(1);
   }
-
-  // if (foods.length === 0) {
-  //   return <p>There are no foods in the database</p>;
-  // }
 
   const filteredFoods = searchQuery
     ? foods.filter((food) =>

@@ -1,14 +1,24 @@
 import { useNavigate } from "react-router-dom";
-import { useForm, type FieldValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { user } from "@services";
 
-// Registrera en användare
+// Skapa en user service
 
-// När vi vill submitta detta formulär så ska en ny användare skapas i databasen och endpointen för detta är ett POST anrop slash api slash users. Se nedan för exempel:
+// Målet nu är att skapa en egen user service där vi gör axios anropet från tidigare och sen anropa register. Skapa en ny fil i services mappen med namnet UserService.ts
 
-// axios.post("https://server.intensivecode.se/api/users");
+// Överför axios koden från register.tsx till UserService.ts och importera.
+
+// Skapa en interface i UserService.ts se nedan exempel:
+
+// interface User {
+//   name: string;
+//   username: string;
+//   password: string;
+// }
+
+// Kopera hela interface User och klistra in den i types.ts sen importera den i UserService.ts.
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -18,7 +28,10 @@ const schema = z.object({
     .min(1, { message: "Email is required" })
     .min(3, { message: "Invalid email." }),
 
-  password: z.string().min(5, { message: "Password is too short" }),
+  password: z
+    .string()
+    .min(1, { message: "Password is required" })
+    .min(5, { message: "Password is too short" }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -35,9 +48,9 @@ function Register() {
     mode: "onChange",
   });
 
-  function onSubmit(data: FieldValues) {
+  async function onSubmit(data: FormData) {
     console.log("Submitted", data);
-    axios.post("https://server.intensivecode.se/api/users");
+    await user.register(data);
     navigate("/foods");
   }
 

@@ -4,21 +4,40 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { user } from "@services";
 
-// Skapa en user service
+// Visa error vid felregistrering'
 
-// Målet nu är att skapa en egen user service där vi gör axios anropet från tidigare och sen anropa register. Skapa en ny fil i services mappen med namnet UserService.ts
+// När vi registerar en användare vars username redan finns i databasen så får vi ett "400 bad request" och ett meddelande i network response/preview "User already exists".
 
-// Överför axios koden från register.tsx till UserService.ts och importera.
+// Men för användare så ser dom inte dessa meddelande i hemsidan på register sida så det vi vill göra är att visa meddeladnde "user already exists" som en error under Username på hemsidan.
 
-// Skapa en interface i UserService.ts se nedan exempel:
+// Knappa in "tryc" så kommer det stå en lista på try catch och tryck enter. Se nedan på koden för svar.
 
-// interface User {
-//   name: string;
-//   username: string;
-//   password: string;
+// Det finns ett till sätt att göra en notis att användaren redan existera och det är toast notification. Det viktiga är att välja och framföra ett tydligt meddelande att det inte gick att registrera användare som redan finns.
+
+// Vi börjar med att visa hur man gör under Username i hemsidan och det är att skapa en setError i Register.tsx.
+
+//  const {
+//    setError,
+//    register,
+//    handleSubmit,
+//    formState: { errors, isValid },
+//  } = useForm<FormData>({
+//    resolver: zodResolver(schema),
+//    mode: "onChange",
+//  });
+
+//  async function onSubmit(data: FormData) {
+//    console.log("Submitted", data);
+//   try {
+//     await user.register(data);
+//     navigate("/foods");
+//   } catch (error: any) {
+//     if (error.response.status === 400) {
+//       setError("username", { message: error.response.data });
+//       console.log(error.response.data);
+//     }
+//   }
 // }
-
-// Kopera hela interface User och klistra in den i types.ts sen importera den i UserService.ts.
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -40,6 +59,7 @@ function Register() {
   const navigate = useNavigate();
 
   const {
+    setError,
     register,
     handleSubmit,
     formState: { errors, isValid },
@@ -50,8 +70,15 @@ function Register() {
 
   async function onSubmit(data: FormData) {
     console.log("Submitted", data);
-    await user.register(data);
-    navigate("/foods");
+    try {
+      await user.register(data);
+      navigate("/foods");
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        setError("username", { message: error.response.data });
+        console.log(error.response.data);
+      }
+    }
   }
 
   return (

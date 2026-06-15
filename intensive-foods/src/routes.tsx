@@ -11,6 +11,7 @@ import {
 } from "./components/common";
 import Login from "@components/pages/Login";
 import Register from "@components/pages/Register";
+import Logout from "@components/common/Logout";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: "/login", element: <Login /> },
+  { path: "/logout", element: <Logout /> },
 
   {
     path: "/register",

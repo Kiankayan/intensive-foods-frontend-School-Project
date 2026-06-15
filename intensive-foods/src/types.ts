@@ -15,6 +15,13 @@ export interface Category {
 }
 
 export interface User {
+  id: string;
+  name: string;
+  username: string;
+  isAdmin: boolean;
+}
+
+export interface UserRegister {
   name: string;
   username: string;
   password: string;

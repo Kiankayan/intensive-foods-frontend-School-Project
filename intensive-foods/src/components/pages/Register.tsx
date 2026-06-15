@@ -4,8 +4,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { user } from "@services";
 
-//
-
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
 

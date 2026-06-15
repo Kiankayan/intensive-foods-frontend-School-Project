@@ -1,66 +1,97 @@
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import type { User } from "@types";
 
-export default function NavBar(): React.ReactElement {
+function NavBar() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    const user = jwtDecode<User>(token);
+
+    setUser(user);
+  }, []);
+
   return (
-    <nav className="navbar bg-body-tertiary mb-4 px-3">
-      <div className="d-flex align-items-center">
-        <NavLink className="navbar-brand mb-0 me-4" to="/foods">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/foods">
           Intensive Foods
-        </NavLink>
+        </Link>
 
-        <NavLink
-          to="/foods"
-          className={({ isActive }) =>
-            isActive
-              ? "nav-link active fw-bold me-3"
-              : "nav-link text-secondary me-3"
-          }
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
-          Foods
-        </NavLink>
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-        <NavLink
-          to="/customers"
-          className={({ isActive }) =>
-            isActive
-              ? "nav-link active fw-bold me-3"
-              : "nav-link text-secondary me-3 "
-          }
-        >
-          Customers
-        </NavLink>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <NavLink
+                className="nav-link active"
+                aria-current="page"
+                to="/foods"
+              >
+                Foods
+              </NavLink>
+            </li>
 
-        <NavLink
-          to="/orders"
-          className={({ isActive }) =>
-            isActive ? "nav-link active fw-bold" : "nav-link text-secondary"
-          }
-        >
-          Orders
-        </NavLink>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/customers">
+                Customers
+              </NavLink>
+            </li>
 
-        <NavLink
-          to="/login"
-          className={({ isActive }) =>
-            isActive
-              ? "nav-link active fw-bold ms-3"
-              : "nav-link text-secondary ms-3"
-          }
-        >
-          Login
-        </NavLink>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/orders">
+                Orders
+              </NavLink>
+            </li>
 
-        <NavLink
-          to="/register"
-          className={({ isActive }) =>
-            isActive
-              ? "nav-link active fw-bold ms-3"
-              : "nav-link text-secondary ms-3"
-          }
-        >
-          Register
-        </NavLink>
+            {user && (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/profile">
+                    {user.name}
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/logout">
+                    Logout
+                  </NavLink>
+                </li>
+              </>
+            )}
+            {!user && (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/login">
+                    Login
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/register">
+                    Register
+                  </NavLink>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
   );
 }
+
+export default NavBar;

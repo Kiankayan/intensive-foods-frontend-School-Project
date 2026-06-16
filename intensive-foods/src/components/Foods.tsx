@@ -29,6 +29,7 @@ export default function Foods() {
     useState<Category>(DEFAULT_CATEGORY);
   const [sortColumn, setSortColumn] = useState(DEFAULT_SORT_COLUMN);
   const [searchQuery, setSearchQuery] = useState("");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     async function fetch() {
@@ -90,6 +91,14 @@ export default function Foods() {
   );
 
   const paginatedFoods = paginate(sortedFoods, PAGE_SIZE, selectedPage);
+
+  if (!token) {
+    return (
+      <div className="container mt-4">
+        <p>There are no foods in the database</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-4">

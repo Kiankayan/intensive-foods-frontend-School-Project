@@ -4,12 +4,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { user } from "@services";
 
-// Logga ut en användare
-
-// Logga ut är enkel att göra, det är att ta bort token i localstorage och ladda om sidan. Det gör man i NavBar.tsx vid routen "/logout".
-
-// Men först, skapa en fil i common mappen som vi kallar för "Logout.tsx" efteråt så vill vi lägga in den i routes.tsx.
-
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
 
@@ -42,7 +36,10 @@ function Register() {
   async function onSubmit(data: FormData) {
     console.log("Submitted", data);
     try {
-      await user.register(data);
+      const { headers } = await user.register(data);
+      const token = headers["x-auth-token"];
+
+      localStorage.setItem("token", token);
       navigate("/foods");
     } catch (error: any) {
       if (error.response.status === 400) {

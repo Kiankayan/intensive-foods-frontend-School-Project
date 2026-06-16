@@ -1,5 +1,5 @@
 function NotFound(): React.ReactElement {
-  return <h1>404 - Pag not found</h1>;
+  return <h1>Page Not Found</h1>;
 }
 
 export default NotFound;

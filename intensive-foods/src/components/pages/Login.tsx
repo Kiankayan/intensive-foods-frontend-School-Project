@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { auth } from "@services";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const schema = z.object({
   username: z.string().min(1, { message: "Username is required" }),
@@ -20,16 +20,17 @@ function Login() {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
   const navigate = useNavigate();
 
+  const { state: fromUrl } = useLocation();
+
   async function onSubmit(data: FormData) {
     console.log("Submitted", data);
 
     try {
-      const token = await auth.login(data);
-      navigate("/foods");
+      await auth.login(data);
+      navigate(fromUrl || "/foods");
     } catch (error: any) {
       if (error.response.status === 400) {
         setError("username", { message: error.response.data });
-        console.log(error.response.data);
       }
     }
   }

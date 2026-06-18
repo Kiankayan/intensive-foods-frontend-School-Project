@@ -1,6 +1,7 @@
 import type { Column, Food, SortColumn } from "@types";
 import { Favorite, Table } from "@components/common";
 import { Link } from "react-router-dom";
+import { auth } from "@services";
 
 interface Props {
   foods: Food[];
@@ -11,6 +12,9 @@ interface Props {
 }
 
 function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
+  const user = auth.getCurrentUser();
+  console.log(user);
+
   const columns: Column<Food>[] = [
     {
       key: "name",
@@ -23,7 +27,6 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
 
     {
       key: "favorite",
-
       content: (food) => (
         <Favorite
           isFavored={food.isFavorite}
@@ -35,9 +38,16 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
     {
       key: "delete",
       content: (food) => (
-        <button className="btn btn-danger" onClick={() => onDelete(food.id)}>
-          Delete
-        </button>
+        <>
+          {user?.isAdmin && (
+            <button
+              className="btn btn-danger"
+              onClick={() => onDelete(food.id)}
+            >
+              Delete
+            </button>
+          )}
+        </>
       ),
     },
   ];

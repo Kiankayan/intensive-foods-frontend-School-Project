@@ -1,5 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-
+import Login from "@components/pages/Login";
+import Register from "@components/pages/Register";
+import { Logout, ProtectedRoute } from "@components/common";
 import App from "./App";
 
 import {
@@ -9,9 +11,6 @@ import {
   NotFound,
   FoodForm,
 } from "./components/common";
-import Login from "@components/pages/Login";
-import Register from "@components/pages/Register";
-import Logout from "@components/common/Logout";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +30,8 @@ const router = createBrowserRouter([
 
       {
         path: "foods/:id",
-        element: <FoodForm />,
+        element: <ProtectedRoute />,
+        children: [{ index: true, element: <FoodForm /> }],
       },
 
       {

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 import { paginate } from "@/utils";
 import { FoodsTable } from "@components";
 import type { Category, Food, SortColumn } from "@/types";
 import { ListGroup, Pagination, SearchBox } from "@/components/common";
-import { getCategories, getFoods, deleteFood } from "@services";
+import { getCategories, getFoods, deleteFood, auth } from "@services";
 
 const DEFAULT_CATEGORY: Category = {
   id: "",
@@ -20,8 +20,6 @@ const DEFAULT_SORT_COLUMN: SortColumn = {
 const PAGE_SIZE = 4;
 
 export default function Foods() {
-  const navigate = useNavigate();
-
   const [foods, setFoods] = useState<Food[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedPage, setSelectedPage] = useState(1);
@@ -29,7 +27,7 @@ export default function Foods() {
     useState<Category>(DEFAULT_CATEGORY);
   const [sortColumn, setSortColumn] = useState(DEFAULT_SORT_COLUMN);
   const [searchQuery, setSearchQuery] = useState("");
-  const token = localStorage.getItem("token");
+  const user = auth.getCurrentUser();
 
   useEffect(() => {
     async function fetch() {
@@ -92,14 +90,6 @@ export default function Foods() {
 
   const paginatedFoods = paginate(sortedFoods, PAGE_SIZE, selectedPage);
 
-  if (!token) {
-    return (
-      <div className="container mt-4">
-        <p>There are no foods in the database</p>
-      </div>
-    );
-  }
-
   return (
     <div className="container mt-4">
       <div className="row">
@@ -110,25 +100,14 @@ export default function Foods() {
             onItemSelect={handleCategorySelect}
           />
         </div>
-
-        <div className="col-9">
-          <button
-            className="btn btn-primary mb-3"
-            onClick={() => navigate("/foods/new")}
-          >
-            New Food
-          </button>
-
-          {foods.length === 0 ? (
-            <p>There are no foods in the database</p>
-          ) : (
-            <>
-              <p>Showing {filteredFoods.length} foods in the database</p>
-
-              <SearchBox searchQuery={searchQuery} onSearch={handleSearch} />
-            </>
+        <div className="col">
+          {user && (
+            <Link to="/foods/new" className="btn btn-primary mb-2">
+              New Food
+            </Link>
           )}
-
+          <p>Showing {filteredFoods.length} foods in the database</p>
+          <SearchBox searchQuery={searchQuery} onSearch={handleSearch} />
           <FoodsTable
             foods={paginatedFoods}
             sortColumn={sortColumn}
@@ -136,7 +115,6 @@ export default function Foods() {
             onDelete={handleDelete}
             onFavor={handleFavor}
           />
-
           <div className="mt-4">
             <Pagination
               totalCount={filteredFoods.length}

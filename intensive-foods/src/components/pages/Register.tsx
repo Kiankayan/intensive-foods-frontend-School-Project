@@ -4,6 +4,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { user } from "@services";
 
+// Redirect efter login
+
+// Innan vi sätter igång med redirect så ska vi städa upp koden lite och comitta protected route. Går in i vår index.ts för att reexporta Logout och ProtectedRoute. Sedan ändrar man i routes.tsx och snyggar till den importen för att kunna comitta.
+
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
 

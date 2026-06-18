@@ -11,3 +11,5 @@ export { default as NavBar } from "./NavBar";
 export { default as FoodForm } from "../pages/FoodForm";
 export { default as Foods } from "../Foods";
 export { default as SearchBox } from "./SearchBox";
+export { default as Logout } from "./Logout";
+export { default as ProtectedRoute } from "./ProtectedRoute";

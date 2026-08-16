@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { getCategories, getFood, saveFood } from "@services";
 import type { Category, Food } from "@types";
+import { _Input, InputField } from "@components/common";
 
 const schema = z.object({
   id: z.string().optional(),
@@ -37,6 +38,8 @@ export default function FoodForm(): React.ReactElement {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+
+  console.log(register("name"));
 
   useEffect(() => {
     async function fetch() {
@@ -76,13 +79,13 @@ export default function FoodForm(): React.ReactElement {
       <h1 className="mb-4">Food Form</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3">
-          <label className="form-label">Name</label>
-
-          <input {...register("name")} className="form-control" />
-
-          {errors.name && <p className="text-danger">{errors.name.message}</p>}
-        </div>
+        <InputField>
+          <InputField.Input {...register("name")} />
+          <InputField.Label>
+            <i className="fa-solid fa-user" /> Name
+          </InputField.Label>
+          <InputField.Error error={errors.name} />
+        </InputField>
 
         <div className="mb-3">
           <label className="form-label">Category</label>
@@ -102,37 +105,21 @@ export default function FoodForm(): React.ReactElement {
           )}
         </div>
 
-        <div className="mb-3">
-          <label className="form-label">Number In Stock</label>
+        <_Input
+          {...register("numberInStock", {
+            valueAsNumber: true,
+          })}
+          label="Stock"
+          error={errors.numberInStock}
+        />
 
-          <input
-            type="number"
-            {...register("numberInStock", {
-              valueAsNumber: true,
-            })}
-            className="form-control"
-          />
-
-          {errors.numberInStock && (
-            <p className="text-danger">{errors.numberInStock.message}</p>
-          )}
-        </div>
-
-        <div className="mb-4">
-          <label className="form-label">Price</label>
-
-          <input
-            type="number"
-            {...register("price", {
-              valueAsNumber: true,
-            })}
-            className="form-control"
-          />
-
-          {errors.price && (
-            <p className="text-danger">{errors.price.message}</p>
-          )}
-        </div>
+        <_Input
+          {...register("price", {
+            valueAsNumber: true,
+          })}
+          label="Price"
+          error={errors.price}
+        />
 
         <button disabled={!isValid} type="submit" className="btn btn-primary">
           Save

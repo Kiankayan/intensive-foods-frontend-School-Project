@@ -17,7 +17,15 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
 
   const columns: Column<Food>[] = [
     {
+      key: "image",
+      content: (food) => (
+        <img src={food.imageUrl} alt="product image" width={40} />
+      ),
+    },
+    {
       key: "name",
+      path: "name",
+      label: "Name",
       content: (food) => <Link to={`/foods/${food.id}`}>{food.name}</Link>,
     },
 

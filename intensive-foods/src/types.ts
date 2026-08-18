@@ -6,6 +6,7 @@ export interface Food {
   category: Category;
   numberInStock: number;
   price: number;
+  imageUrl: string;
   isFavorite: boolean;
 }
 

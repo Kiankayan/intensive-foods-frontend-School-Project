@@ -7,6 +7,7 @@ interface FoodFormData {
   categoryId: string;
   numberInStock: number;
   price: number;
+  imageUrl: string;
 }
 
 //const API_BASEURL = "https://server.intensivecode.se/api/foods";

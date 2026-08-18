@@ -1,6 +1,8 @@
 import { forwardRef, type InputHTMLAttributes } from "react";
 import type { FieldError } from "react-hook-form";
 
+// React query part2
+
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   icon?: string;

@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { getCategories, getFood, saveFood } from "@services";
-import type { Category, Food } from "@types";
+import { saveFood } from "@services";
+import type { Food } from "@types";
 import { _Input, InputField } from "@components/common";
+import { useGetFood } from "@queries/foods";
+import { useGetCategories } from "@queries/categories";
 
 const schema = z.object({
   id: z.string().optional(),
@@ -20,6 +21,7 @@ const schema = z.object({
     .number()
     .min(1, { message: "Price must be at least 1" })
     .max(20, { message: "Price cannot exceed 20" }),
+  imageUrl: z.string().min(1, { message: "Image is required" }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -27,8 +29,8 @@ type FormData = z.infer<typeof schema>;
 export default function FoodForm(): React.ReactElement {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [categories, setCategories] = useState<Category[]>([]);
-
+  const { data: categories = [] } = useGetCategories();
+  const { data: food, isError, isLoading } = useGetFood(id);
   const {
     register,
     handleSubmit,
@@ -39,40 +41,34 @@ export default function FoodForm(): React.ReactElement {
     mode: "onChange",
   });
 
-  console.log(register("name"));
-
   useEffect(() => {
-    async function fetch() {
-      const { data: categories } = await getCategories();
-      setCategories(categories);
-
-      if (!id || id === "new") return;
-
-      const { data: food } = await getFood(id);
-
-      if (!food) return navigate("/not-found");
-
-      reset(mapToFormData(food));
+    if (isError) {
+      navigate("/not-found");
+      return;
     }
 
-    fetch();
-  }, []);
+    if (food) {
+      reset(mapToFormData(food));
+    }
+  }, [food, isError]);
 
-  function mapToFormData(food: Food) {
+  function mapToFormData(food: Food): FormData {
     return {
       id: food.id,
       name: food.name,
       categoryId: food.category.id,
       numberInStock: food.numberInStock,
       price: food.price,
+      imageUrl: food.imageUrl,
     };
   }
 
   async function onSubmit(data: FormData) {
-    console.log("data,", data);
     await saveFood(data);
     navigate("/foods");
   }
+
+  if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <div className="container mt-4">
@@ -119,6 +115,12 @@ export default function FoodForm(): React.ReactElement {
           })}
           label="Price"
           error={errors.price}
+        />
+
+        <_Input
+          {...register("imageUrl")}
+          label="Image"
+          error={errors.imageUrl}
         />
 
         <button disabled={!isValid} type="submit" className="btn btn-primary">

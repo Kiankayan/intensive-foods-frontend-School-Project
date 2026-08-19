@@ -13,5 +13,5 @@ export { default as Foods } from "../Foods";
 export { default as SearchBox } from "./SearchBox";
 export { default as Logout } from "./Logout";
 export { default as ProtectedRoute } from "./ProtectedRoute";
-export { default as _Input } from "./_Input";
+export { default as Input } from "./Input";
 export { default as InputField } from "./InputField";

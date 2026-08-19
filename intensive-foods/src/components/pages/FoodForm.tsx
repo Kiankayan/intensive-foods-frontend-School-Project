@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { saveFood } from "@services";
 import type { Food } from "@types";
-import { _Input, InputField } from "@components/common";
+import { Input, InputField } from "@components/common";
 import { useGetFood } from "@queries/foods";
 import { useGetCategories } from "@queries/categories";
 
@@ -101,7 +101,7 @@ export default function FoodForm(): React.ReactElement {
           )}
         </div>
 
-        <_Input
+        <Input
           {...register("numberInStock", {
             valueAsNumber: true,
           })}
@@ -109,7 +109,7 @@ export default function FoodForm(): React.ReactElement {
           error={errors.numberInStock}
         />
 
-        <_Input
+        <Input
           {...register("price", {
             valueAsNumber: true,
           })}
@@ -117,7 +117,7 @@ export default function FoodForm(): React.ReactElement {
           error={errors.price}
         />
 
-        <_Input
+        <Input
           {...register("imageUrl")}
           label="Image"
           error={errors.imageUrl}

@@ -9,18 +9,18 @@ import { auth } from "@services";
 import { useDeleteFood, useGetFoods } from "@queries/foods";
 import { useGetCategories } from "@queries/categories";
 
-// Arbeta med filer i formulär
-
-// Ändra våra _Input i foodform till Input sedan commita.
+// Refaktorisering och cleanup
 
 const DEFAULT_CATEGORY: Category = {
   id: "",
   name: "All Categories",
 };
+
 const DEFAULT_SORT_COLUMN: SortColumn = {
   path: "name",
   order: "asc",
 };
+
 const PAGE_SIZE = 4;
 
 export default function Foods() {
@@ -28,10 +28,13 @@ export default function Foods() {
   const { data: foods = [] } = useGetFoods();
   const { mutate: handleDelete } = useDeleteFood();
   const { data: categories = [] } = useGetCategories();
+
   const [selectedCategory, setSelectedCategory] =
     useState<Category>(DEFAULT_CATEGORY);
+
   const [sortColumn, setSortColumn] = useState(DEFAULT_SORT_COLUMN);
   const [searchQuery, setSearchQuery] = useState("");
+
   const user = auth.getCurrentUser();
 
   function handleFavor(id: string) {
@@ -48,7 +51,7 @@ export default function Foods() {
 
     console.log(newFoods);
 
-    //  setFoods(newFoods);
+    // setFoods(newFoods);
   }
 
   function handleCategorySelect(category: Category) {
@@ -89,14 +92,18 @@ export default function Foods() {
             onItemSelect={handleCategorySelect}
           />
         </div>
+
         <div className="col">
           {user && (
             <Link to="/foods/new" className="btn btn-primary mb-2">
               New Food
             </Link>
           )}
+
           <p>Showing {filteredFoods.length} foods in the database</p>
+
           <SearchBox searchQuery={searchQuery} onSearch={handleSearch} />
+
           <FoodsTable
             foods={paginatedFoods}
             sortColumn={sortColumn}
@@ -104,6 +111,7 @@ export default function Foods() {
             onDelete={handleDelete}
             onFavor={handleFavor}
           />
+
           <div className="mt-4">
             <Pagination
               totalCount={filteredFoods.length}

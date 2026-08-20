@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { saveFood } from "@services";
+import { cloudinary, saveFood } from "@services";
 import type { Food } from "@types";
 import { Input, InputField } from "@components/common";
 import { useGetFood } from "@queries/foods";
@@ -21,7 +21,23 @@ const schema = z.object({
     .number()
     .min(1, { message: "Price must be at least 1" })
     .max(20, { message: "Price cannot exceed 20" }),
-  imageUrl: z.string().min(1, { message: "Image is required" }),
+  images: z
+    .instanceof(FileList)
+    .refine(
+      (fileList) =>
+        fileList.length === 0 ||
+        ["image/png", "image/jpeg"].includes(fileList[0].type),
+      {
+        message: "Only PNG/JPEG images are allowed",
+      },
+    )
+    .refine(
+      (fileList) => fileList.length === 0 || fileList[0].size <= 5_000_000,
+      {
+        message: "Maximum file size allowed is 5 MB",
+      },
+    )
+    .optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -59,12 +75,19 @@ export default function FoodForm(): React.ReactElement {
       categoryId: food.category.id,
       numberInStock: food.numberInStock,
       price: food.price,
-      imageUrl: food.imageUrl,
     };
   }
 
-  async function onSubmit(data: FormData) {
-    await saveFood(data);
+  async function onSubmit({ images, ...data }: FormData) {
+    console.log("data", data);
+
+    let imageUrl = food?.imageUrl || "";
+
+    if (images && images.length > 0) {
+      imageUrl = await cloudinary.saveImage(images[0]);
+    }
+
+    await saveFood({ ...data, imageUrl });
     navigate("/foods");
   }
 
@@ -116,11 +139,14 @@ export default function FoodForm(): React.ReactElement {
           label="Price"
           error={errors.price}
         />
-
+        {food?.imageUrl && (
+          <img src={food.imageUrl} alt={food.name} width={80} />
+        )}
         <Input
-          {...register("imageUrl")}
-          label="Image"
-          error={errors.imageUrl}
+          type="file"
+          {...register("images")}
+          label={food?.imageUrl ? "Change Image" : "Image"}
+          error={errors.images}
         />
 
         <button disabled={!isValid} type="submit" className="btn btn-primary">

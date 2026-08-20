@@ -22,6 +22,7 @@ function FoodsTable({ foods, sortColumn, onSort, onDelete, onFavor }: Props) {
         <img src={food.imageUrl} alt="product image" width={40} />
       ),
     },
+
     {
       key: "name",
       path: "name",

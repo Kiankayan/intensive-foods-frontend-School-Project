@@ -5,6 +5,7 @@ import { auth } from "@services";
 
 interface Props {
   foods: Food[];
+
   sortColumn: SortColumn;
   onSort: (sortColumn: SortColumn) => void;
   onDelete: (id: string) => void;

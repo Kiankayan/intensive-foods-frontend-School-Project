@@ -9,7 +9,37 @@ import { auth } from "@services";
 import { useDeleteFood, useGetFoods } from "@queries/foods";
 import { useGetCategories } from "@queries/categories";
 
-// Refaktorisering och cleanup
+// Förberedelse för E-handel
+
+// Öppna vår Cloudinary assets och töm alla bilder som finns genom att trycka på CTRL + A och sedan på sopptunnan.
+
+// Sedan tar vi bort vår images mapp i vår frontend vscode eftersom alla bilder kommer laddas upp på cloudinary.
+
+// I hemsidan så kan vi se att våra bilder har försvunnit eller visas inte längre eftersom vi tog bort images mappen.
+
+// Låt oss rensa lite av våra produkter och spara de som är relevant sedan ladda ner en banan bild ta bort bakgrunden sedan skapa det till en banana.png fil sedan uppdaterar vi alla våra produkter till rätt bild i hemsidan.
+
+// Refresha vår Cloudinary assets så får vi alla våra sparade bilder direkt i Cloudinary.
+
+// En bra grej att göra är att strukturera och kategorisera våra ssets och ha alla bilder i en mapp i "Folders" i cloudinary men vi vill göra detta via vår kod istället.
+
+// Öppna cloudinaryService.ts filen och skriv "formData.append("folder", "foods");" alltså såhär i helhet:
+
+// async function saveImage(file: File) {
+//  const formData = new FormData();
+//  formData.append("file", file);
+//  formData.append("folder", "foods");
+//  formData.append("upload_preset", "intensive_foods");
+//  const response = await axios.post(cloudinaryURL, formData, {
+//    headers: { "x-auth-token": undefined },
+//  });
+
+//  return response.data.secure_url;
+// }
+
+// Spara sedan gå till Cloudinary och skapa en ny mapp via folders som heter "foods" och sedan flytta över alla 7 bilder i mappen sedan är det klart.
+
+// Nu så kommer alla våra bilder sparas i mappen på vår Cloudinary sedan commitar vi koden.
 
 const DEFAULT_CATEGORY: Category = {
   id: "",

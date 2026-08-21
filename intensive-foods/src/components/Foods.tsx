@@ -9,37 +9,38 @@ import { auth } from "@services";
 import { useDeleteFood, useGetFoods } from "@queries/foods";
 import { useGetCategories } from "@queries/categories";
 
-// Förberedelse för E-handel
+// Konfigurera projektet
 
-// Öppna vår Cloudinary assets och töm alla bilder som finns genom att trycka på CTRL + A och sedan på sopptunnan.
+// Använd Dribble hemsidan för inspiration på hur vår projekt ska se ut i olika vyn tex, Home eller desktop vy, Mobil vy, kassa vy osv.
 
-// Sedan tar vi bort vår images mapp i vår frontend vscode eftersom alla bilder kommer laddas upp på cloudinary.
+// Låt oss börja med att installer och konfigurera vårt projekt genom att öppna terminalen och börja med att gå ut ur vår intensive-foods mappen innan vi skapar projektet med vite för annars kommer vårt projekt skapas som en undermapp och det vill vi inte så skriv "cd .." cd är change directory och första punkten pekar på nuvarande mapp och två punkter är föregående mapp.
 
-// I hemsidan så kan vi se att våra bilder har försvunnit eller visas inte längre eftersom vi tog bort images mappen.
+// Nu kan vi skriva "npm create vite" med projektnamn "intensive-foods-ecommerce" och sedan väljer vi "React" och "typescript" sedan vill vi öppna en ny vscode ruta istället för att gå till cd intensive-foods-ecommerce så ändrar vi cd till "code" alltså såhär "code intensive-foods-ecommerce" och då öppnas en ny vscode med vår ecommerce projekt.
 
-// Låt oss rensa lite av våra produkter och spara de som är relevant sedan ladda ner en banan bild ta bort bakgrunden sedan skapa det till en banana.png fil sedan uppdaterar vi alla våra produkter till rätt bild i hemsidan.
+// Det absolut första vi vill göra i vår ecommerce projekt är att skriva i terminalen "npm install" och sedan "git init" för det viktigt att ha version hantering tidigt i projektet. Sedan skriver vi "npm run dev" för att öppna vår nya projekt i hemsida.
 
-// Refresha vår Cloudinary assets så får vi alla våra sparade bilder direkt i Cloudinary.
+// Sedan vill vi rensa lite onödiga mappar och filer så ta bort assets mappen, och app.css. Töm index.css koden och töm även App.tsx koden. Skriv sedan i App.tsx filen för att se att allting funkar med denna kod:
 
-// En bra grej att göra är att strukturera och kategorisera våra ssets och ha alla bilder i en mapp i "Folders" i cloudinary men vi vill göra detta via vår kod istället.
-
-// Öppna cloudinaryService.ts filen och skriv "formData.append("folder", "foods");" alltså såhär i helhet:
-
-// async function saveImage(file: File) {
-//  const formData = new FormData();
-//  formData.append("file", file);
-//  formData.append("folder", "foods");
-//  formData.append("upload_preset", "intensive_foods");
-//  const response = await axios.post(cloudinaryURL, formData, {
-//    headers: { "x-auth-token": undefined },
-//  });
-
-//  return response.data.secure_url;
+// export default function App() {
+//  return <h1>Intensive Foods Ecommerce</h1>;
 // }
 
-// Spara sedan gå till Cloudinary och skapa en ny mapp via folders som heter "foods" och sedan flytta över alla 7 bilder i mappen sedan är det klart.
+// ändra i main.tsx till denna import "import App from "./App";"
 
-// Nu så kommer alla våra bilder sparas i mappen på vår Cloudinary sedan commitar vi koden.
+// Sedan öppnar man index.html och ändrar titeln samt ta bort faviconen alltså såhär i helhet:
+
+// <!doctype html>
+// <html lang="en">
+//  <head>
+//    <meta charset="UTF-8" />
+//    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+//    <title>Ecommerce - Intensive Foods</title>
+//  </head>
+//  <body>
+//    <div id="root"></div>
+//    <script type="module" src="/src/main.tsx"></script>
+//  </body>
+// </html>
 
 const DEFAULT_CATEGORY: Category = {
   id: "",

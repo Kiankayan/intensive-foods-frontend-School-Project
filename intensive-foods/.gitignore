@@ -1,3 +1,4 @@
+cat > .gitignore <<'EOF'
 # Logs
 logs
 *.log
@@ -12,6 +13,10 @@ dist
 dist-ssr
 *.local
 
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +27,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+EOF
